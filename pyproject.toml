@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imsdb-local"
+version = "1.0.0"
+description = "Local, permission-aware ingestion system for the Internet Movie Script Database (IMSDb) into MongoDB."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Proprietary - internal educational project" }
+dependencies = [
+    "httpx>=0.28,<1",
+    "beautifulsoup4>=4.12,<5",
+    "lxml>=5.2",
+    "pydantic>=2.7,<3",
+    "pymongo>=4.10,<5",
+    "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+imsdb-local = "src.main:main"
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "mongodb: test requires a reachable local MongoDB server (skipped otherwise)",
+    "slow: slower integration test",
+]
+filterwarnings = [
+    "error::pytest.PytestUnraisableExceptionWarning",
+]

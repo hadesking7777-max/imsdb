@@ -1,0 +1,7 @@
+# GPU build of the chatbot runtime: Vulkan (any NVIDIA, AMD or Intel GPU; needs only the GPU's normal driver).
+# Installed by `python scripts/setup.py --chatbot` into runtime/gpu/vulkan (NOT into .venv), next to the CPU build.
+# src/chatbot/device.py tests it at start-up and falls back to the CPU build if no GPU is usable.
+# Same version as the CPU build (0.3.36). Pinned by SHA-256 (from the project's wheel index).
+--only-binary=:all:
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/vulkan
+llama-cpp-python==0.3.36 --hash=sha256:b3d58d70e9fa6216f3d1919bb6141a98eb22eb889e14a44d080dd250e969fab4

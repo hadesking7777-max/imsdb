@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+
+# Environment / secrets
+.env
+
+# Collected data, logs, backups (local only - never commit screenplay content)
+data/raw/*
+data/processed/*
+data/exports/*
+data/backups/*
+data/models/*
+data/index/*
+!data/**/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# runtime/win64/msvcp140.dll (Microsoft redistributable) and runtime/gpu/vulkan (llama-cpp-python, MIT) ARE
+# committed so a clone runs without extra downloads; an optional CUDA build is installed locally only.
+runtime/gpu/cuda/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

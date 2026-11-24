@@ -1,0 +1,8 @@
+# Optional GPU build of the chatbot runtime: CUDA 12.5 (NVIDIA GPUs only; usually faster than Vulkan on NVIDIA).
+# Install with `python scripts/setup.py --chatbot --gpu-backend cuda` (into runtime/gpu/cuda, ~510 MB).
+# Needs an NVIDIA driver that supports CUDA 12.5 (version 555 or newer). Not tested on the development
+# computer, which has no GPU; if it fails its start-up test, the Vulkan build or the CPU is used instead.
+# Pinned by SHA-256 (from the project's wheel index).
+--only-binary=:all:
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu125
+llama-cpp-python==0.3.36 --hash=sha256:77c80c6f1d81e7062f1aa36958a8c11b675bfaa6bb4893ea3f9509b3c054c020

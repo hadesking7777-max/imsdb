@@ -1,0 +1,12 @@
+# Offline chatbot (Phase 2). Install with: python scripts/setup.py --chatbot
+# This is the CPU build, installed into .venv; it is always present and is the fallback when no GPU is usable.
+# The GPU build (requirements-gpu-vulkan.txt, optionally requirements-gpu-cuda.txt) goes into runtime/gpu/.
+# Prebuilt wheels only: no compiler, CUDA toolkit or other system software is needed.
+#
+# llama-cpp-python is pinned to 0.3.36 on purpose: its Windows wheel targets AVX2 processors.
+# The 0.3.38 wheel (and some earlier ones) use newer CPU instructions and crash with
+# "illegal instruction" (0xc000001d) on CPUs such as the Ryzen 5 3600.
+--only-binary=:all:
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+llama-cpp-python==0.3.36
+numpy>=2,<3
