@@ -1,0 +1,65 @@
+{
+  "question": "《泰坦尼克号》里杰克在船头说了什么？",
+  "answer": "ROSE 说：\"我改变了主意。\"（我改变主意了。）  \nJACK 说：\"嘘，过来。\"（嘘，过来。）  \nJACK 说：\"闭上眼睛。\"（闭上眼睛。）  \nJACK 说：\"好了，睁开眼睛。\"（好了，睁开眼睛。）  \nJACK 说：\"他们将会后悔的。\"（他们将会后悔的。）  \nJACK 说：\"你真是个十足的傻瓜。\"（你真是个十足的傻瓜。）  \nJACK 说：\"你不会游泳吗？\"（你不会游泳吗？）",
+  "language": "zh",
+  "plan": {
+    "intent": "scene_search",
+    "films": [
+      "Titanic"
+    ],
+    "character": "JACK",
+    "genre": "",
+    "writer": "",
+    "year": 0,
+    "scene_position": "any",
+    "search_query": "Jack bow of the ship \"king of the world\""
+  },
+  "sources": [
+    {
+      "n": 1,
+      "label": "Titanic, scene 67 (part 1 of 3): EXT. TITANIC - DAY",
+      "film": "Titanic",
+      "year": null,
+      "scene_number": 67,
+      "heading": "EXT. TITANIC - DAY",
+      "chunk_id": "sc-titanic-428a5dd2:s0067:k00",
+      "excerpt": "99 EXT. TITANIC - DAY\n\nTITANIC STEAMS TOWARD US, in the dusk light, as if lit by the embers of a\ngiant fire. As the ship looms, FILLING FRAME, we push in on the bow. Jack\nis there, right at the apex of the bow railing, his favorite spot. He\ncloses his eyes, letting the chill wind clear his head.\n\nJack hears her voice, behind him...\n\nROSE\n\nHello, Jack.\n\nHe turns and she is standing there.\n\nROSE\n\nI "
+    },
+    {
+      "n": 2,
+      "label": "Titanic, scene 27: EXT. BOW - DAY",
+      "film": "Titanic",
+      "year": null,
+      "scene_number": 27,
+      "heading": "EXT. BOW - DAY",
+      "chunk_id": "sc-titanic-428a5dd2:s0027:k00",
+      "excerpt": "51 EXT. BOW - DAY\n\nThe ship glows with the warm creamy light of late afternoon. Jack and\nFabrizio stand right at the bow gripping the curving railing so familiar\nfrom images of the wreck. Jack leans over, looking down fifty feet to where\nthe prow cuts the surface like a knife, sending up two glassy sheets of\nwater.\n\nCUT TO:"
+    },
+    {
+      "n": 3,
+      "label": "Titanic, scene 67 (part 3 of 3): EXT. TITANIC - DAY",
+      "film": "Titanic",
+      "year": null,
+      "scene_number": 67,
+      "heading": "EXT. TITANIC - DAY",
+      "chunk_id": "sc-titanic-428a5dd2:s0067:k02",
+      "excerpt": "tilted back, surrendering to him, to the emotion, to the inevitable. They\nkiss, slowly and tremulously, and then with building passion.\n\nJack and the ship seem to merge into one force of power and optimism,\nlifting her, buoying her forward on a magical journey, soaring onward into\na night without fear.\n\n100 IN THE CROW'S NEST, high above and behind them, lookout FREDERICK FLEET\nnudges his mate, RE"
+    },
+    {
+      "n": 4,
+      "label": "Titanic, scene 43 (part 2 of 4): EXT. BOAT DECK - DAY",
+      "film": "Titanic",
+      "year": null,
+      "scene_number": 43,
+      "heading": "EXT. BOAT DECK - DAY",
+      "chunk_id": "sc-titanic-428a5dd2:s0043:k01",
+      "excerpt": "I just had to get away... just run and run and run... and then I was at the\nback rail and there was no more ship... even the Titanic wasn't big enough.\nNot enough to get away from them. And before I'd really though about it, I\nwas over the rail. I was so furious. I'll show them. They'll be sorry!\n\nJACK\n\nUh huh. They'll be sorry. 'Course you'll be dead.\n\nROSE\n\n(she lowers her head)\n\nOh God, I am su"
+    }
+  ],
+  "timings": {
+    "plan": 28.7,
+    "search": 9.1,
+    "answer": 67.2,
+    "total": 105.1
+  }
+}

@@ -1,0 +1,3 @@
+03:32:24 INFO    imsdb.chatbot.device: GPU test (vulkan): failed - no GPU found (only AMD Ryzen 5 3600 6-Core Processor)
+03:32:24 INFO    imsdb.chatbot.llm: compute device: CPU (no usable GPU, using the CPU (vulkan: no GPU found (only AMD Ryzen 5 3600 6-Core Processor)))
+03:32:34 INFO    imsdb.chatbot.llm: chat model loaded in 9.7s (6 threads, gpu_layers=0)

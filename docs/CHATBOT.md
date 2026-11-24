@@ -7,7 +7,8 @@ It runs on a **GPU by default** and falls back to the **CPU** automatically when
 ## 1. Quick start
 
 ```bash
-# once (needs internet): install the runtime (CPU build + Vulkan GPU build) and download the models (~5.7 GB)
+# once: install the runtime (CPU build + Vulkan GPU build) and assemble the models from the repository's
+# pieces in data/models/parts (downloaded from Hugging Face only if the pieces are missing)
 python scripts/setup.py --chatbot
 python -m src.main models fetch
 python -m src.main device                    # shows whether the GPU or the CPU will be used, and why

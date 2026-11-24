@@ -1,0 +1,9 @@
+200/1223 Body of Evidence 12s
+400/1223 Face Off 24s
+600/1223 Invictus 37s
+800/1223 The Neverending Story 50s
+1000/1223 Silver Bullet 64s
+1200/1223 Withnail and I 78s
+{'scripts': 1223, 'rechunked': 1223, 'unchanged': 0, 'removed': 0, 'chunks_written': 237173, 'chunks_total': 237173}
+{'scripts_parsed': 1223, 'scripts_indexed': 1223, 'chunks': 237173, 'text_index': True, 'ready': True, 'complete': True}
+80s

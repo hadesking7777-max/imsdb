@@ -1,0 +1,25 @@
+{
+  "question": "Who wrote Alien?",
+  "answer": "Walter Hill and David Giler wrote Alien.",
+  "language": "en",
+  "plan": {
+    "intent": "film_details",
+    "films": [
+      "Alien"
+    ],
+    "character": "",
+    "genre": "",
+    "writer": "",
+    "year": 0,
+    "scene_position": "any",
+    "search_query": "",
+    "carried_over": false
+  },
+  "sources": [],
+  "timings": {
+    "plan": 32.4,
+    "answer": 16.5,
+    "total": 48.9
+  },
+  "unverified_quotes": []
+}

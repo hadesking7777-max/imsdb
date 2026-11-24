@@ -1,0 +1,19 @@
+health: ready {'chat_model': 'Qwen3-8B-Q4_K_M.gguf', 'threads': 6, 'context': 8192, 'chat_load_seconds': 9.0, 'embed_model': 'Qwen3-Embedding-0.6B-Q8_0.gguf'}
+
+=== Q: 《泰坦尼克号》里杰克在船头说了什么？
+stages: [('planning', 0), ('searching', 28), ('writing', 37)]  first token after 85s
+sources: ['Titanic, scene 67 (part 1 of 3): EXT. TITANIC - DAY', 'Titanic, scene 27: EXT. BOW - DAY', 'Titanic, scene 67 (part 3 of 3): EXT. TITANIC - DAY', 'Titanic, scene 43 (part 2 of 4): EXT. BOAT DECK - DAY']
+timings: {'plan': 28.4, 'search': 8.8, 'answer': 64.3, 'total': 101.5}
+A: 在这一稿剧本中，杰克在船头对罗斯说："Sssshh. Come here."（嘘，过来。）[1] 他用手扶住她的腰，仿佛要吻她。随后他说："Close your eyes."（闭上眼睛。）[1] 然后他转身让她面对前方，接着将她的手举高，让她双臂张开如翅膀般站立。最后他说："Okay. Open them."（好了，睁开眼睛。）[1]
+
+=== Q: 那这部电影是怎么结尾的？
+stages: [('planning', 0), ('searching', 10), ('writing', 18)]  first token after 63s
+sources: ["Titanic, scene 195 (part 1 of 2): INT. ROSE'S CABIN / KELDYSH", "Titanic, scene 195 (part 2 of 2): INT. ROSE'S CABIN / KELDYSH", 'Titanic, scene 176 (part 3 of 4): EXT. TITANIC - NIGHT', 'Titanic, scene 182 (part 2 of 2): EXT. OCEAN']
+timings: {'plan': 9.7, 'search': 8.6, 'answer': 74.0, 'total': 92.3}
+A: 在这一稿剧本中，电影的结尾是：[3] 索菲亚和杰克在船头跳入水中，随着船体下沉，他们被海水吞没，最终消失在水下。[4] 杰克在临终前对罗斯说："你必须答应我...承诺你将会活下去...无论发生什么...无论多么绝望...现在就承诺我，永远不要放开这个承诺。" [4] 罗斯答应了，并说："我承诺。我会永远不放开你，杰克。" [4] 她紧握着他的手，他们头靠在一起，安静下来，只剩下水声。[4] 随后画面切到：[3] 船体下沉，名字“TITANIC”消失，杰克和罗斯的小小身影消失在水中。[3]
+
+=== Q: Who wrote Alien, and who are its main characters?
+stages: [('planning', 0), ('writing', 7)]  first token after 29s
+sources: []
+timings: {'plan': 7.2, 'answer': 37.0, 'total': 44.3}
+A: The question is about "Alien," but the provided FACTS pertain to the screenplay draft of "Titanic." There is no information in the FACTS about the film "Alien" or its writers and main characters. To answer this question accurately, you would need to refer to general knowledge about "Alien," which was written by Ronald Shiner and directed by Ridley Scott, with main characters including Ellen Ripley (played by Sigourney Weaver), Ash (played by Ian Holm), and the xenomorph alien.

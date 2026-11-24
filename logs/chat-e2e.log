@@ -1,0 +1,68 @@
+models {'chat_model': 'Qwen3-8B-Q4_K_M.gguf', 'threads': 6, 'context': 8192, 'chat_load_seconds': 9.5, 'embed_model': 'Qwen3-Embedding-0.6B-Q8_0.gguf'} 10.1s
+
+=== Q: Who has the most lines in Pulp Fiction, and what is the first thing Jules says?
+plan: {"intent": "scene_search", "films": ["Pulp Fiction"], "character": "JULES", "genre": "", "writer": "", "year": 0, "scene_position": "any", "search_query": "most lines Jules first thing says"}
+sources: ['Pulp Fiction, scene 8: INT. APARTMENT (ROOM 49) \x96 MORNING', 'Pulp Fiction, scene 92: INT. COFFEE SHOP \x96 MORNING', 'Pulp Fiction, scene 7: INT. APARTMENT BUILDING HALLWAY \x96 MORNING', "Pulp Fiction, scene 77: INT. JIMMIE'S BATHROOM \x96 DAY"]
+timings: {'plan': 27.7, 'search': 13.7, 'answer': 69.3, 'total': 110.7}
+A: VINCENT has the most lines in *Pulp Fiction* with 258. Jules's first lines are: "Okay now, tell me about the hash bars?" [1].
+
+=== Q: 《泰坦尼克号》里杰克在船头说了什么？
+plan: {"intent": "scene_search", "films": ["Titanic"], "character": "JACK", "genre": "", "writer": "", "year": 0, "scene_position": "any", "search_query": "Jack bow of the ship \"king of the world\""}
+sources: ['Titanic, scene 67: 99 EXT. TITANIC - DAY', 'Titanic, scene 27: 51 EXT. BOW - DAY', 'Titanic, scene 67: 99 EXT. TITANIC - DAY', 'Titanic, scene 28: 52 INT. / EXT. TITANIC - SERIES OF SCENES - DAY']
+timings: {'plan': 10.2, 'search': 12.4, 'answer': 47.4, 'total': 70.0}
+A: 在《泰坦尼克号》中，杰克在船头说的第一句话是：“你改变主意了？”（ROSE: I changed my mind.）[1]
+
+=== Q: 列出所有恐怖片
+plan: {"intent": "list_films", "films": ["Titanic"], "character": "", "genre": "Horror", "writer": "", "year": 0, "scene_position": "any", "search_query": ""}
+sources: []
+timings: {'plan': 7.9, 'total': 7.9}
+A: 符合条件（类型：Horror）的电影共 165 部：
+
+- 28 Days Later (2003)
+- A Nightmare on Elm Street
+- A Quiet Place (2018)
+- After.Life (2010)
+- Alien
+- Alien 3
+- Alien: Resurrection
+- Alien vs. Predator
+- Aliens
+- Alone in the Dark (2005)
+- American Psycho
+- American Werewolf in London
+- April Fool's Day (1986)
+- Army of Darkness
+- Bad Dreams (1988)
+- Blade
+- Blade II
+- Blade: Trinity (2004)
+- Bones
+- Buffy the Vampire Slayer
+- Carrie (1976)
+- Case 39 (2010)
+- Chasing Sleep (2001)
+- Cherry Falls (2000)
+- Constantine (2005)
+- Copycat
+- Cube
+- Dawn of the Dead
+- Day of the Dead
+- Deep Rising
+- Devil's Advocate (1997)
+- Drag Me to Hell (2009)
+- Eight Legged Freaks
+- Event Horizon (1997)
+- Evil Dead
+- Evil Dead II: Dead by Dawn
+- Feast (2006)
+- Final Destination
+- Final Destination 2
+- Frankenstein (1994)
+
+（只显示前 40 部，共 165 部。）
+
+=== Q: How does The Shawshank Redemption end?
+plan: {"intent": "scene_search", "films": ["The Shawshank Redemption"], "character": "", "genre": "", "writer": "", "year": 0, "scene_position": "ending", "search_query": "Red walks free"}
+sources: ['The Shawshank Redemption, scene 249: 296 EXT -- TRAVELING SHOT -- DAY (1967) 296', 'The Shawshank Redemption, scene 250: 298 EXT -- BEACH -- WIDE PANORAMIC SHOT -- DAY (1967) 298', "The Shawshank Redemption, scene 226: 273 INT -- RED'S CELL -- NIGHT (1966) 273", "The Shawshank Redemption, scene 33: 38 INT -- RED'S CELL -- NIGHT (1947) 38"]
+timings: {'plan': 8.1, 'search': 9.8, 'answer': 50.1, 'total': 68.0}
+A: The Shawshank Redemption ends with Red and Andy reuniting on a beach, where they sand the hull of a boat together. Red expresses his hope to see Andy and shake his hand, and Andy compliments Red's ability to get things done. They work side by side as the scene fades out. [2]

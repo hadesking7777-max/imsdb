@@ -19,6 +19,10 @@ log = logging.getLogger("imsdb.models")
 
 DOWNLOAD_USER_AGENT = "imsdb-local-chatbot/1.0 (one-time model download)"
 MAX_STALLED_ATTEMPTS = 5  # consecutive connections that deliver no data before the download gives up
+# The repository stores each model as numbered pieces below GitHub's 100 MB file limit, in data/models/parts.
+# They are joined (and SHA-256-verified) into the real .gguf file the first time a model is needed.
+PARTS_DIR = "parts"
+PART_BYTES = 95 * 1024 * 1024
 
 
 @dataclass(frozen=True)
@@ -138,10 +142,96 @@ def model_status(models_dir: Path, spec: ModelSpec, *, verify_hash: bool = False
     return status
 
 
-def require_model(models_dir: Path, spec: ModelSpec) -> Path:
-    """Return the model path, or explain how to fetch it. Never downloads anything.
+def part_files(models_dir: Path, spec: ModelSpec) -> list[Path]:
+    """List the stored pieces of a model, in order.
 
-    Only the size is checked (hashing is too slow for every start-up).
+    Args:
+        models_dir: The models folder.
+        spec: The model.
+
+    Returns:
+        ``<models_dir>/parts/<filename>.part001``, ``.part002`` ... (empty when the model has no pieces).
+    """
+    return sorted((models_dir / PARTS_DIR).glob(f"{spec.filename}.part[0-9][0-9][0-9]"))
+
+
+def split_model(models_dir: Path, spec: ModelSpec, part_bytes: int = PART_BYTES) -> list[Path]:
+    """Cut a verified model file into numbered pieces small enough for GitHub (maintainer tool).
+
+    Existing pieces of the model are replaced. The complete file is kept.
+
+    Args:
+        models_dir: The models folder holding the complete model file.
+        spec: The model.
+        part_bytes: Maximum size of one piece in bytes (default 95 MiB, below GitHub's 100 MB limit).
+
+    Returns:
+        The pieces written, in order.
+
+    Raises:
+        ModelError: The complete model file is missing or fails its SHA-256 check.
+    """
+    source = model_path(models_dir, spec)
+    if not source.exists() or source.stat().st_size != spec.size or sha256_file(source) != spec.sha256:
+        raise ModelError(f"{source} is missing or does not match its SHA-256; fetch it first")
+    folder = models_dir / PARTS_DIR
+    folder.mkdir(parents=True, exist_ok=True)
+    for old in part_files(models_dir, spec):
+        old.unlink()
+    parts: list[Path] = []
+    with source.open("rb") as fh:
+        while block := fh.read(part_bytes):
+            part = folder / f"{spec.filename}.part{len(parts) + 1:03d}"
+            part.write_bytes(block)
+            parts.append(part)
+    return parts
+
+
+def assemble_model(models_dir: Path, spec: ModelSpec) -> Path | None:
+    """Join a model's stored pieces into the complete file, if the pieces are present.
+
+    The pieces are written to a temporary file that only replaces the target after its SHA-256 matches,
+    so an interrupted or corrupt join never leaves a bad model behind.
+
+    Args:
+        models_dir: The models folder.
+        spec: The model.
+
+    Returns:
+        The complete model path (also when it already existed), or None when there are no pieces, or they do
+        not add up to the model's size (e.g. an incomplete clone).
+
+    Raises:
+        ModelError: The pieces have the right total size but the joined file fails the SHA-256 check.
+    """
+    final = model_path(models_dir, spec)
+    if final.exists() and final.stat().st_size == spec.size:
+        return final
+    parts = part_files(models_dir, spec)
+    if not parts or sum(p.stat().st_size for p in parts) != spec.size:
+        return None
+    log.info("assembling %s from %d stored pieces (first use only)", spec.filename, len(parts))
+    tmp = final.with_name(final.name + ".assembling")
+    digest = hashlib.sha256()
+    with tmp.open("wb") as out:
+        for part in parts:
+            with part.open("rb") as fh:
+                while block := fh.read(8 * 1024 * 1024):
+                    digest.update(block)
+                    out.write(block)
+    if digest.hexdigest() != spec.sha256:
+        tmp.unlink(missing_ok=True)
+        raise ModelError(f"the stored pieces of {spec.filename} do not match its SHA-256; "
+                         f"re-clone the repository or run: python -m src.main models fetch")
+    tmp.replace(final)
+    return final
+
+
+def require_model(models_dir: Path, spec: ModelSpec) -> Path:
+    """Return the model path, assembling it from the repository's stored pieces if needed. Never downloads.
+
+    Only the size of an existing file is checked (hashing is too slow for every start-up); a file assembled
+    from pieces is SHA-256-verified once, when it is assembled.
 
     Args:
         models_dir: The models folder.
@@ -155,6 +245,9 @@ def require_model(models_dir: Path, spec: ModelSpec) -> Path:
     """
     path = model_path(models_dir, spec)
     if not path.exists() or path.stat().st_size != spec.size:
+        assembled = assemble_model(models_dir, spec)
+        if assembled is not None:
+            return assembled
         raise ModelError(f"Model file {spec.filename} is missing or incomplete in {models_dir}. "
                          f"Run once (needs internet): python -m src.main models fetch")
     return path
@@ -162,7 +255,7 @@ def require_model(models_dir: Path, spec: ModelSpec) -> Path:
 
 def fetch_model(models_dir: Path, spec: ModelSpec, *, stop_event: threading.Event | None = None,
                 progress: Callable[[int, int], None] | None = None, client: httpx.Client | None = None) -> Path:
-    """Download (or resume) one model file and verify its SHA-256. Idempotent.
+    """Get one model file: assemble it from the repository's stored pieces, or download (or resume) it; verify SHA-256.
 
     Bytes are appended to ``<filename>.part`` using HTTP Range requests, resuming after dropped connections;
     the part file is renamed to the final name only after the size and SHA-256 match. An existing complete file
@@ -188,6 +281,8 @@ def fetch_model(models_dir: Path, spec: ModelSpec, *, stop_event: threading.Even
     """
     models_dir.mkdir(parents=True, exist_ok=True)
     final = model_path(models_dir, spec)
+    if assemble_model(models_dir, spec) is not None:  # pieces stored in the repository: no download needed
+        return final
     if final.exists() and final.stat().st_size == spec.size:
         log.info("%s already present; verifying checksum", spec.filename)
         if sha256_file(final) == spec.sha256:

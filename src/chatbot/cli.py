@@ -65,15 +65,17 @@ def _engine(rt: Any, args: argparse.Namespace) -> Any:
 
 # ---------------------------------------------------------------------- models
 def cmd_models(rt: Any, args: argparse.Namespace) -> int:
-    """``models fetch|status``: download or check the configured chat and embedding model files.
+    """``models fetch|status|split``: get, check or split the configured chat and embedding model files.
 
-    ``fetch`` downloads (or resumes) each file with progress output every 2 s and verifies its SHA-256; this
-    is the only command that uses the network. ``status`` prints one line per model.
+    ``fetch`` assembles each file from the pieces stored in the repository or, when there are none, downloads
+    (or resumes) it with progress output every 2 s; either way its SHA-256 is verified. It is the only command
+    that may use the network. ``status`` prints one line per model. ``split`` (maintainers) cuts each verified
+    model into the pieces below 100 MB that the repository stores in ``data/models/parts``.
 
     Args:
         rt: Application runtime from ``src.main`` (settings, lazily connected ``mongo``, ``stop_event``).
-        args: Parsed arguments: ``action`` (``"fetch"`` or ``"status"``) and ``verify`` (with status, also check
-            SHA-256).
+        args: Parsed arguments: ``action`` (``"fetch"``, ``"status"`` or ``"split"``) and ``verify`` (with status,
+            also check SHA-256).
 
     Returns:
         Exit code: OK, or USAGE when ``status`` finds a missing or incomplete file.
@@ -81,7 +83,7 @@ def cmd_models(rt: Any, args: argparse.Namespace) -> int:
     Raises:
         ConfigError: A download failed or a checksum did not match.
     """
-    from src.chatbot.model_store import MODELS, ModelError, fetch_model, model_status
+    from src.chatbot.model_store import MODELS, ModelError, fetch_model, model_status, split_model
 
     _utf8_console()
     wanted = [MODELS[rt.settings.chat_model], MODELS[rt.settings.embed_model]]
@@ -93,6 +95,14 @@ def cmd_models(rt: Any, args: argparse.Namespace) -> int:
             ok &= bool(good)
             _out(f"{spec.role:<10} {spec.filename:<36} {'OK' if good else 'MISSING/INCOMPLETE':<20} {spec.license}")
         return ExitCode.OK if ok else ExitCode.USAGE
+    if args.action == "split":
+        for spec in wanted:
+            try:
+                parts = split_model(rt.settings.models_dir, spec)
+            except ModelError as exc:
+                raise ConfigError(str(exc)) from exc
+            _out(f"{spec.filename}: {len(parts)} pieces in {parts[0].parent}")
+        return ExitCode.OK
     for spec in wanted:
         last = [0.0]
 
@@ -364,7 +374,7 @@ def register(add: Any) -> None:
             it.
     """
     p = add("models", cmd_models, "download (once) or check the local chatbot model files")
-    p.add_argument("action", choices=["fetch", "status"])
+    p.add_argument("action", choices=["fetch", "status", "split"])
     p.add_argument("--verify", action="store_true", help="with status: also verify SHA-256 checksums")
 
     p = add("device", cmd_device, "show whether the chatbot will run on a GPU or the CPU, and why")

@@ -1,0 +1,824 @@
+{
+  "generated_at": "2026-11-24T12:51:45.671000+00:00",
+  "database": "imsdb_local",
+  "deep": false,
+  "counts": {
+    "movies": 1295,
+    "scripts": 1233,
+    "script_versions": 131,
+    "scenes": 159701,
+    "characters": 64057,
+    "dialogues": 958685,
+    "crawl_queue": 2590,
+    "crawl_logs": 5206,
+    "crawl_jobs": 4,
+    "source_permissions": 1,
+    "raw_artifacts": 2580
+  },
+  "issues": [
+    {
+      "check": "duplicate_natural_keys",
+      "severity": "info",
+      "count": 0,
+      "message": "natural keys appearing more than once (should be impossible with unique indexes)",
+      "examples": []
+    },
+    {
+      "check": "duplicate_movies",
+      "severity": "info",
+      "count": 0,
+      "message": "movies sharing a normalized title+year under different URLs (kept separate for review)",
+      "examples": []
+    },
+    {
+      "check": "duplicate_scripts",
+      "severity": "info",
+      "count": 0,
+      "message": "different script URLs with byte-identical extracted text",
+      "examples": []
+    },
+    {
+      "check": "missing_or_failed_screenplay_text",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts whose text could not be extracted or parsed (raw HTML preserved; try 'reparse')",
+      "examples": []
+    },
+    {
+      "check": "very_short_screenplay_text",
+      "severity": "warning",
+      "count": 3,
+      "message": "parsed scripts with fewer than 2000 characters (possibly incomplete page)",
+      "examples": [
+        {
+          "_id": "sc-fletch-d67f93ee",
+          "text_length": 91
+        },
+        {
+          "_id": "sc-neverending-story-the-93ebd1e5",
+          "text_length": 12
+        },
+        {
+          "_id": "sc-omega-man-f67d3c60",
+          "text_length": 161
+        }
+      ]
+    },
+    {
+      "check": "scripts_empty_at_source",
+      "severity": "warning",
+      "count": 10,
+      "message": "script pages whose IMSDb script container is present but empty (a source-side gap; raw HTML preserved)",
+      "examples": [
+        {
+          "_id": "sc-apollo-13-81d0b367",
+          "script_url": "https://imsdb.com/scripts/Apollo-13.html"
+        },
+        {
+          "_id": "sc-commando-25f21291",
+          "script_url": "https://imsdb.com/scripts/Commando.html"
+        },
+        {
+          "_id": "sc-conan-the-barbarian-9fb1c96c",
+          "script_url": "https://imsdb.com/scripts/Conan-the-Barbarian.html"
+        },
+        {
+          "_id": "sc-existenz-d15d83aa",
+          "script_url": "https://imsdb.com/scripts/eXistenZ.html"
+        },
+        {
+          "_id": "sc-frankenstein-939b0fa9",
+          "script_url": "https://imsdb.com/scripts/Frankenstein.html"
+        },
+        {
+          "_id": "sc-frankenweenie-3cb93ec8",
+          "script_url": "https://imsdb.com/scripts/Frankenweenie.html"
+        },
+        {
+          "_id": "sc-scary-movie-2-d6f65bfc",
+          "script_url": "https://imsdb.com/scripts/Scary-Movie-2.html"
+        },
+        {
+          "_id": "sc-this-is-40-d59027b5",
+          "script_url": "https://imsdb.com/scripts/This-is-40.html"
+        },
+        {
+          "_id": "sc-what-about-bob-23aca93c",
+          "script_url": "https://imsdb.com/scripts/What-About-Bob.html"
+        },
+        {
+          "_id": "sc-who-framed-roger-rabbit-f3a16fda",
+          "script_url": "https://imsdb.com/scripts/Who-Framed-Roger-Rabbit.html"
+        }
+      ]
+    },
+    {
+      "check": "broken_shared_script_references",
+      "severity": "info",
+      "count": 0,
+      "message": "movies marked as sharing another movie's script whose referenced script is missing",
+      "examples": []
+    },
+    {
+      "check": "scripts_not_yet_collected",
+      "severity": "info",
+      "count": 0,
+      "message": "movies whose detail page was collected but whose screenplay is not stored yet",
+      "examples": []
+    },
+    {
+      "check": "empty_dialogue_blocks",
+      "severity": "warning",
+      "count": 17807,
+      "message": "dialogue blocks with a character cue but no spoken text",
+      "examples": [
+        {
+          "_id": "sc-12-682c87ef:d00137",
+          "speaker_raw": "AUGUST.",
+          "original_text": "AUGUST. \n\t(No response)"
+        },
+        {
+          "_id": "sc-12-682c87ef:d00404",
+          "speaker_raw": "SON",
+          "original_text": "SON\n\t(Aims gun)"
+        },
+        {
+          "_id": "sc-10-things-i-hate-about-you-148143d9:d00361",
+          "speaker_raw": "MICHAEL",
+          "original_text": "MICHAEL \n                           (to Patrick)"
+        },
+        {
+          "_id": "sc-10-things-i-hate-about-you-148143d9:d00421",
+          "speaker_raw": "KAT",
+          "original_text": "KAT \n                           (yelling)"
+        },
+        {
+          "_id": "sc-12-years-a-slave-9b706e34:d00441",
+          "speaker_raw": "SOLOMON",
+          "original_text": "SOLOMON \n           (almost tripping over"
+        },
+        {
+          "_id": "sc-127-hours-76644ade:d00159",
+          "speaker_raw": "ARON (CONT'D)",
+          "original_text": "ARON (CONT'D)\n           (he struggles to complete\n           the sense of the"
+        },
+        {
+          "_id": "sc-127-hours-76644ade:d00214",
+          "speaker_raw": "ARON",
+          "original_text": "ARON\n           (spitting out this\n           declaration at the rock)"
+        },
+        {
+          "_id": "sc-187-6dd1ab10:d00000",
+          "speaker_raw": "ASSISTANT PRINCIPAL",
+          "original_text": "ASSISTANT PRINCIPAL"
+        },
+        {
+          "_id": "sc-187-6dd1ab10:d00001",
+          "speaker_raw": "STRAGGLING STUDENT",
+          "original_text": "STRAGGLING STUDENT"
+        },
+        {
+          "_id": "sc-187-6dd1ab10:d00002",
+          "speaker_raw": "VOICE IN CROWD",
+          "original_text": "VOICE IN CROWD"
+        },
+        {
+          "_id": "sc-187-6dd1ab10:d00003",
+          "speaker_raw": "TREVOR",
+          "original_text": "TREVOR"
+        },
+        {
+          "_id": "sc-187-6dd1ab10:d00004",
+          "speaker_raw": "AUGGIE",
+          "original_text": "AUGGIE"
+        },
+        {
+          "_id": "sc-187-6dd1ab10:d00005",
+          "speaker_raw": "TYWAN",
+          "original_text": "TYWAN"
+        },
+        {
+          "_id": "sc-187-6dd1ab10:d00006",
+          "speaker_raw": "TREVOR",
+          "original_text": "TREVOR"
+        },
+        {
+          "_id": "sc-187-6dd1ab10:d00007",
+          "speaker_raw": "TYWAN",
+          "original_text": "TYWAN"
+        }
+      ]
+    },
+    {
+      "check": "invalid_source_urls",
+      "severity": "info",
+      "count": 0,
+      "message": "URLs that are not canonical or have the wrong page type",
+      "examples": []
+    },
+    {
+      "check": "scripts_without_movie",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts referencing a missing movie",
+      "examples": []
+    },
+    {
+      "check": "broken_scene_references",
+      "severity": "info",
+      "count": 0,
+      "message": "scenes referencing a missing script",
+      "examples": []
+    },
+    {
+      "check": "dialogues_with_broken_scene",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogues referencing a missing scene",
+      "examples": []
+    },
+    {
+      "check": "dialogues_without_scene",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogues not assigned to any scene",
+      "examples": []
+    },
+    {
+      "check": "dialogues_without_script",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogues referencing a missing script",
+      "examples": []
+    },
+    {
+      "check": "dialogues_with_broken_character",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogues referencing a missing character",
+      "examples": []
+    },
+    {
+      "check": "inconsistent_character_references",
+      "severity": "info",
+      "count": 0,
+      "message": "characters whose stored dialogue_count differs from their dialogue records",
+      "examples": []
+    },
+    {
+      "check": "dialogues_without_character",
+      "severity": "warning",
+      "count": 1,
+      "message": "dialogue blocks whose speaker could not be normalized",
+      "examples": [
+        {
+          "_id": "sc-hancock-8ed2027a:d00351",
+          "speaker_raw": "(CONTINUING"
+        }
+      ]
+    },
+    {
+      "check": "structure_count_mismatch",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts whose stored scene/dialogue counts differ from the derived records ([actual, expected])",
+      "examples": []
+    },
+    {
+      "check": "text_offset_mismatch",
+      "severity": "info",
+      "count": 0,
+      "message": "scene/dialogue text that does not match its offsets in the script text (sampled 25 scripts; use --deep for all)",
+      "examples": []
+    },
+    {
+      "check": "encoding_problems",
+      "severity": "warning",
+      "count": 37,
+      "message": "scripts with replacement characters, mojibake, control characters or fallback decoding",
+      "examples": [
+        {
+          "_id": "sc-42-a49d8bf1",
+          "encoding": {
+            "used": "iso8859-1",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 0,
+              "mojibake_sequences": 1,
+              "control_chars": 71
+            }
+          }
+        },
+        {
+          "_id": "sc-a-serious-man-db4eb394",
+          "encoding": {
+            "used": "utf-8",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 1,
+              "mojibake_sequences": 0,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-adjustment-bureau-the-c96e1e71",
+          "encoding": {
+            "used": "utf-8",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 9,
+              "mojibake_sequences": 0,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-argo-9cd8e282",
+          "encoding": {
+            "used": "iso8859-1",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 0,
+              "mojibake_sequences": 5,
+              "control_chars": 78
+            }
+          }
+        },
+        {
+          "_id": "sc-bridesmaids-d45e358e",
+          "encoding": {
+            "used": "iso8859-1",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 0,
+              "mojibake_sequences": 0,
+              "control_chars": 352
+            }
+          }
+        },
+        {
+          "_id": "sc-cecil-b-demented-13fa1f3f",
+          "encoding": {
+            "used": "utf-8",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 1,
+              "mojibake_sequences": 0,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-deception-62c746ad",
+          "encoding": {
+            "used": "cp1252",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 0,
+              "mojibake_sequences": 5,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-eagle-eye-db0b1e82",
+          "encoding": {
+            "used": "utf-8",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 1,
+              "mojibake_sequences": 0,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-ghost-rider-879d1439",
+          "encoding": {
+            "used": "utf-8",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 6,
+              "mojibake_sequences": 0,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-gremlins-19f5a379",
+          "encoding": {
+            "used": "utf-8",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 14,
+              "mojibake_sequences": 0,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-gremlins-2-6281fcef",
+          "encoding": {
+            "used": "cp1252",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 0,
+              "mojibake_sequences": 5,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-hancock-8ed2027a",
+          "encoding": {
+            "used": "utf-8",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 6,
+              "mojibake_sequences": 0,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-hanna-5eb57745",
+          "encoding": {
+            "used": "iso8859-1",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 0,
+              "mojibake_sequences": 0,
+              "control_chars": 74
+            }
+          }
+        },
+        {
+          "_id": "sc-hunt-for-red-october-the-45293b62",
+          "encoding": {
+            "used": "utf-8",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 6,
+              "mojibake_sequences": 0,
+              "control_chars": 0
+            }
+          }
+        },
+        {
+          "_id": "sc-i-am-number-four-4db8b74d",
+          "encoding": {
+            "used": "iso8859-1",
+            "strict": true,
+            "declared_http": "UTF-8",
+            "declared_meta": "iso-8859-1"
+          },
+          "structure_stats": {
+            "encoding_problems": {
+              "replacement_chars": 0,
+              "mojibake_sequences": 1,
+              "control_chars": 92
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "unexpected_script_html",
+      "severity": "warning",
+      "count": 12,
+      "message": "scripts not extracted from a single <pre> block (by method: {'multi_pre': 1, 'scrtext_html': 11})",
+      "examples": [
+        {
+          "_id": "sc-25th-hour-46b02411",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-bourne-supremacy-the-f78c37db",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-catwoman-cd7d0d29",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-collateral-5774514d",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-el-mariachi-6d941f12",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-get-shorty-1959c883",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-incredibles-the-df3b00a1",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-napoleon-dynamite-28047390",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-rushmore-b69d0cf7",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-star-wars-revenge-of-the-sith-e0c12352",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-village-the-38a1c3d4",
+          "extraction": {
+            "method": "scrtext_html"
+          }
+        },
+        {
+          "_id": "sc-o-brother-where-art-thou-f4d558ae",
+          "extraction": {
+            "method": "multi_pre"
+          }
+        }
+      ]
+    },
+    {
+      "check": "unexpected_detail_html",
+      "severity": "info",
+      "count": 0,
+      "message": "movie detail pages missing the expected script-details structure",
+      "examples": []
+    },
+    {
+      "check": "incomplete_or_uncertain_extraction",
+      "severity": "warning",
+      "count": 191,
+      "message": "scripts flagged as possibly incomplete or uncertain: no_scene_headings, no_dialogue, low_extraction_ratio, very_short_text, high_uncertainty, fallback_extraction",
+      "examples": [
+        {
+          "_id": "sc-187-6dd1ab10",
+          "structure_stats": {
+            "uncertain_ratio": 0.4693
+          },
+          "quality_flags": [
+            "empty_dialogue_blocks",
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-2001-a-space-odyssey-9bef558d",
+          "structure_stats": {
+            "uncertain_ratio": 0.2597
+          },
+          "quality_flags": [
+            "empty_dialogue_blocks",
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-25th-hour-46b02411",
+          "structure_stats": {
+            "uncertain_ratio": 0.3707
+          },
+          "quality_flags": [
+            "high_uncertainty",
+            "no_dialogue"
+          ]
+        },
+        {
+          "_id": "sc-9-1a94cdd0",
+          "structure_stats": {
+            "uncertain_ratio": 0.2744
+          },
+          "quality_flags": [
+            "empty_dialogue_blocks",
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-a-quiet-place-f7799f31",
+          "structure_stats": {
+            "uncertain_ratio": 0.332
+          },
+          "quality_flags": [
+            "empty_dialogue_blocks",
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-addams-family-the-fa4714f3",
+          "structure_stats": {
+            "uncertain_ratio": 0.4637
+          },
+          "quality_flags": [
+            "empty_dialogue_blocks",
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-agnes-of-god-054469fb",
+          "structure_stats": {
+            "uncertain_ratio": 0.3214
+          },
+          "quality_flags": [
+            "empty_dialogue_blocks",
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-aladdin-28ea9cc8",
+          "structure_stats": {
+            "uncertain_ratio": 0.8097
+          },
+          "quality_flags": [
+            "high_uncertainty",
+            "no_scene_headings"
+          ]
+        },
+        {
+          "_id": "sc-alien-resurrection-3ec83862",
+          "structure_stats": {
+            "uncertain_ratio": 0.3356
+          },
+          "quality_flags": [
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-all-the-president-s-men-3b3a8b7d",
+          "structure_stats": {
+            "uncertain_ratio": 0.0352
+          },
+          "quality_flags": [
+            "no_scene_headings"
+          ]
+        },
+        {
+          "_id": "sc-alone-in-the-dark-24ecc060",
+          "structure_stats": {
+            "uncertain_ratio": 0.2652
+          },
+          "quality_flags": [
+            "empty_dialogue_blocks",
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-amelia-e41b7f0d",
+          "structure_stats": {
+            "uncertain_ratio": 0.2963
+          },
+          "quality_flags": [
+            "empty_dialogue_blocks",
+            "high_uncertainty"
+          ]
+        },
+        {
+          "_id": "sc-american-graffiti-b5c40607",
+          "structure_stats": {
+            "uncertain_ratio": 0.0261
+          },
+          "quality_flags": [
+            "no_scene_headings"
+          ]
+        },
+        {
+          "_id": "sc-american-madness-3c99dde8",
+          "structure_stats": {
+            "uncertain_ratio": 0.3276
+          },
+          "quality_flags": [
+            "high_uncertainty",
+            "no_dialogue"
+          ]
+        },
+        {
+          "_id": "sc-american-outlaws-a9b9bff8",
+          "structure_stats": {
+            "uncertain_ratio": 0.0
+          },
+          "quality_flags": [
+            "no_dialogue",
+            "no_scene_headings"
+          ]
+        }
+      ]
+    },
+    {
+      "check": "raw_artifact_integrity",
+      "severity": "info",
+      "count": 0,
+      "message": "raw artifacts missing on disk (use --deep to verify checksums)",
+      "examples": []
+    },
+    {
+      "check": "records_exceed_sample_limit",
+      "severity": "info",
+      "count": 0,
+      "message": "records collected beyond the sample limit (not applicable: current level 'bulk')",
+      "examples": []
+    },
+    {
+      "check": "scripts_without_rights_metadata",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts lacking attribution/rights metadata",
+      "examples": []
+    }
+  ],
+  "checks_run": [
+    "duplicates",
+    "missing_screenplay_text",
+    "empty_dialogue_blocks",
+    "invalid_source_urls",
+    "references",
+    "character_references",
+    "structure_counts",
+    "text_offsets",
+    "encoding_problems",
+    "unexpected_html_structures",
+    "incomplete_extraction",
+    "raw_artifacts",
+    "permission_consistency"
+  ],
+  "passed": true,
+  "error_checks": 0,
+  "warning_checks": 7
+}

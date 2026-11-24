@@ -1,0 +1,6 @@
+ScriptBot is running at http://localhost:8765/  (this computer only; press Ctrl+C to stop)
+Models are loading in the background; the page shows when they are ready.
+04:52:09 INFO    imsdb.chatbot.device: GPU test (vulkan): failed - no GPU found (only AMD Ryzen 5 3600 6-Core Processor)
+04:52:09 INFO    imsdb.chatbot.llm: compute device: CPU (no usable GPU, using the CPU (vulkan: no GPU found (only AMD Ryzen 5 3600 6-Core Processor)))
+04:52:19 INFO    imsdb.chatbot.llm: chat model loaded in 9.2s (6 threads, gpu_layers=0)
+04:52:51 INFO    imsdb.chatbot.engine: prompt caches warmed in 31.2s

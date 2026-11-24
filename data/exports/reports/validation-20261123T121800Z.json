@@ -1,0 +1,243 @@
+{
+  "generated_at": "2026-11-23T12:18:00.017000+00:00",
+  "database": "imsdb_local",
+  "deep": true,
+  "counts": {
+    "movies": 1295,
+    "scripts": 3,
+    "script_versions": 0,
+    "scenes": 452,
+    "characters": 120,
+    "dialogues": 2342,
+    "crawl_queue": 1360,
+    "crawl_logs": 155,
+    "crawl_jobs": 3,
+    "source_permissions": 1,
+    "raw_artifacts": 58
+  },
+  "issues": [
+    {
+      "check": "duplicate_natural_keys",
+      "severity": "info",
+      "count": 0,
+      "message": "natural keys appearing more than once (should be impossible with unique indexes)",
+      "examples": []
+    },
+    {
+      "check": "duplicate_movies",
+      "severity": "warning",
+      "count": 1,
+      "message": "movies sharing a normalized title+year under different URLs (kept separate for review)",
+      "examples": [
+        {
+          "title_key": "el-mariachi",
+          "year": null,
+          "ids": [
+            "mv-el-mariachi-299011b9",
+            "mv-el-mariachi-8f5ee306"
+          ]
+        }
+      ]
+    },
+    {
+      "check": "duplicate_scripts",
+      "severity": "info",
+      "count": 0,
+      "message": "different script URLs with byte-identical extracted text",
+      "examples": []
+    },
+    {
+      "check": "missing_or_failed_screenplay_text",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts whose text could not be extracted or parsed (raw HTML preserved; try 'reparse')",
+      "examples": []
+    },
+    {
+      "check": "very_short_screenplay_text",
+      "severity": "info",
+      "count": 0,
+      "message": "parsed scripts with fewer than 2000 characters (possibly incomplete page)",
+      "examples": []
+    },
+    {
+      "check": "scripts_not_yet_collected",
+      "severity": "info",
+      "count": 0,
+      "message": "movies whose detail page was collected but whose screenplay is not stored yet",
+      "examples": []
+    },
+    {
+      "check": "empty_dialogue_blocks",
+      "severity": "warning",
+      "count": 4,
+      "message": "dialogue blocks with a character cue but no spoken text",
+      "examples": [
+        {
+          "_id": "sc-12-682c87ef:d00137",
+          "speaker_raw": "AUGUST.",
+          "original_text": "AUGUST. \n\t(No response)"
+        },
+        {
+          "_id": "sc-12-682c87ef:d00404",
+          "speaker_raw": "SON",
+          "original_text": "SON\n\t(Aims gun)"
+        },
+        {
+          "_id": "sc-10-things-i-hate-about-you-148143d9:d00361",
+          "speaker_raw": "MICHAEL",
+          "original_text": "MICHAEL \n                           (to Patrick)"
+        },
+        {
+          "_id": "sc-10-things-i-hate-about-you-148143d9:d00421",
+          "speaker_raw": "KAT",
+          "original_text": "KAT \n                           (yelling)"
+        }
+      ]
+    },
+    {
+      "check": "invalid_source_urls",
+      "severity": "info",
+      "count": 0,
+      "message": "URLs that are not canonical or have the wrong page type",
+      "examples": []
+    },
+    {
+      "check": "scripts_without_movie",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts referencing a missing movie",
+      "examples": []
+    },
+    {
+      "check": "broken_scene_references",
+      "severity": "info",
+      "count": 0,
+      "message": "scenes referencing a missing script",
+      "examples": []
+    },
+    {
+      "check": "dialogues_with_broken_scene",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogues referencing a missing scene",
+      "examples": []
+    },
+    {
+      "check": "dialogues_without_scene",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogues not assigned to any scene",
+      "examples": []
+    },
+    {
+      "check": "dialogues_without_script",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogues referencing a missing script",
+      "examples": []
+    },
+    {
+      "check": "dialogues_with_broken_character",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogues referencing a missing character",
+      "examples": []
+    },
+    {
+      "check": "inconsistent_character_references",
+      "severity": "info",
+      "count": 0,
+      "message": "characters whose stored dialogue_count differs from their dialogue records",
+      "examples": []
+    },
+    {
+      "check": "dialogues_without_character",
+      "severity": "info",
+      "count": 0,
+      "message": "dialogue blocks whose speaker could not be normalized",
+      "examples": []
+    },
+    {
+      "check": "structure_count_mismatch",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts whose stored scene/dialogue counts differ from the derived records ([actual, expected])",
+      "examples": []
+    },
+    {
+      "check": "text_offset_mismatch",
+      "severity": "info",
+      "count": 0,
+      "message": "scene/dialogue text that does not match its offsets in the script text",
+      "examples": []
+    },
+    {
+      "check": "encoding_problems",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts with replacement characters, mojibake, control characters or fallback decoding",
+      "examples": []
+    },
+    {
+      "check": "unexpected_script_html",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts not extracted from a single <pre> block (by method: {})",
+      "examples": []
+    },
+    {
+      "check": "unexpected_detail_html",
+      "severity": "info",
+      "count": 0,
+      "message": "movie detail pages missing the expected script-details structure",
+      "examples": []
+    },
+    {
+      "check": "incomplete_or_uncertain_extraction",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts flagged as possibly incomplete or uncertain: no_scene_headings, no_dialogue, low_extraction_ratio, very_short_text, high_uncertainty, fallback_extraction",
+      "examples": []
+    },
+    {
+      "check": "raw_artifact_integrity",
+      "severity": "info",
+      "count": 0,
+      "message": "raw artifacts missing on disk or failing checksum",
+      "examples": []
+    },
+    {
+      "check": "records_exceed_sample_limit",
+      "severity": "info",
+      "count": 0,
+      "message": "3 records collected while the permission level is 'sample' with limit 10",
+      "examples": []
+    },
+    {
+      "check": "scripts_without_rights_metadata",
+      "severity": "info",
+      "count": 0,
+      "message": "scripts lacking attribution/rights metadata",
+      "examples": []
+    }
+  ],
+  "checks_run": [
+    "duplicates",
+    "missing_screenplay_text",
+    "empty_dialogue_blocks",
+    "invalid_source_urls",
+    "references",
+    "character_references",
+    "structure_counts",
+    "text_offsets",
+    "encoding_problems",
+    "unexpected_html_structures",
+    "incomplete_extraction",
+    "raw_artifacts",
+    "permission_consistency"
+  ],
+  "passed": true,
+  "error_checks": 0,
+  "warning_checks": 2
+}

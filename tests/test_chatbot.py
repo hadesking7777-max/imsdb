@@ -555,6 +555,54 @@ def test_model_fetch_resumes_and_verifies(tmp_path: Path) -> None:
     assert len(requests) == 1
 
 
+def test_model_pieces_round_trip_without_network(tmp_path: Path) -> None:
+    """A model split into pieces (as stored in the repository) is reassembled and verified on first use,
+    and ``fetch_model`` then needs no download.
+
+    Args:
+        tmp_path: pytest's per-test temporary folder (the models directory).
+    """
+    data = bytes(range(256)) * 50
+    spec = _spec(data)
+    (tmp_path / "tiny.gguf").write_bytes(data)
+    parts = model_store.split_model(tmp_path, spec, part_bytes=1000)
+    assert len(parts) == 13 and all(p.stat().st_size <= 1000 for p in parts)
+    (tmp_path / "tiny.gguf").unlink()  # a fresh clone has only the pieces
+    assert model_store.require_model(tmp_path, spec).read_bytes() == data
+    (tmp_path / "tiny.gguf").unlink()
+
+    def no_network(request: httpx.Request) -> httpx.Response:
+        """Fail the test if a download is attempted.
+
+        Args:
+            request: The unexpected request.
+
+        Returns:
+            Never returns.
+        """
+        raise AssertionError("must not download when pieces are present")
+
+    with httpx.Client(transport=httpx.MockTransport(no_network)) as client:
+        assert model_store.fetch_model(tmp_path, spec, client=client).read_bytes() == data
+
+
+def test_corrupt_model_piece_is_rejected(tmp_path: Path) -> None:
+    """Pieces whose joined content fails the SHA-256 check never produce a model file.
+
+    Args:
+        tmp_path: pytest's per-test temporary folder (the models directory).
+    """
+    data = b"model bytes " * 300
+    spec = _spec(data)
+    (tmp_path / "tiny.gguf").write_bytes(data)
+    parts = model_store.split_model(tmp_path, spec, part_bytes=1000)
+    (tmp_path / "tiny.gguf").unlink()
+    parts[1].write_bytes(b"X" * parts[1].stat().st_size)
+    with pytest.raises(model_store.ModelError, match="SHA-256"):
+        model_store.require_model(tmp_path, spec)
+    assert not (tmp_path / "tiny.gguf").exists() and not (tmp_path / "tiny.gguf.assembling").exists()
+
+
 def test_plan_parsing_survives_wrong_shapes() -> None:
     """JSON that is not an object, or fields of the wrong type, fall back to defaults instead of crashing."""
     assert Plan.from_json("[1, 2]").intent == "scene_search"

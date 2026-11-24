@@ -1,29 +1,27 @@
-# Python
+# Python caches (regenerated automatically)
 __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
-.venv/
-venv/
 build/
 dist/
 
-# Environment / secrets
-.env
-
-# Collected data, logs, backups (local only - never commit screenplay content)
+# Everything else in the project folder is committed (models, virtual environment, .env, logs, reports, runtime),
+# EXCEPT the collected screenplay content: it is copyrighted by its owners and must not be redistributed.
 data/raw/*
 data/processed/*
-data/exports/*
 data/backups/*
-data/models/*
-data/index/*
+data/exports/export-*/
 !data/**/.gitkeep
-logs/*
-!logs/.gitkeep
 
-# runtime/win64/msvcp140.dll (Microsoft redistributable) and runtime/gpu/vulkan (llama-cpp-python, MIT) ARE
-# committed so a clone runs without extra downloads; an optional CUDA build is installed locally only.
+# Models are committed as pieces below GitHub's 100 MB limit (data/models/parts) and reassembled on first use;
+# the assembled files and download/assembly leftovers are not committed.
+data/models/*.gguf
+data/models/*.part
+data/models/*.assembling
+data/index/*
+
+# Optional CUDA build (510 MB; installed with: python scripts/setup.py --chatbot --gpu-backend cuda)
 runtime/gpu/cuda/
 
 # OS / editors

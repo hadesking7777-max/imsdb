@@ -48,13 +48,19 @@ and how to change each part safely. Deeper references:
 
 ## 1. Quick start
 
-**What this repository contains.** All source code, tests, documentation, configuration templates, the
-app-local Windows C++ runtime (`runtime/win64/msvcp140.dll`) and the Vulkan GPU build of the chatbot runtime
-(`runtime/gpu/vulkan`). It does **not** contain the collected screenplays (raw pages, database, backups,
-exports): they are copyrighted by their owners and are not redistributed. It also does not contain the model
-files (5.7 GB, larger than GitHub allows); `models fetch` downloads them from Hugging Face at pinned, checksum-
-verified revisions. Starting from a fresh clone therefore means: install, then collect your own archive (with
-permission from the source, section 5) or restore a backup you already own (section 13).
+**What this repository contains.** Everything in the project folder except the collected screenplays:
+source code, tests, documentation, configuration (`.env`, `.env.example`), logs and validation reports, the
+app-local Windows C++ runtime (`runtime/win64/msvcp140.dll`), the Vulkan GPU build of the chatbot runtime
+(`runtime/gpu/vulkan`), the development virtual environment (`.venv`) and **both AI models** (5.7 GB). The
+models are stored as 58 pieces below GitHub's 100 MB file limit in `data/models/parts/`; the first command that
+needs a model joins its pieces into the `.gguf` file and checks its SHA-256 (about a minute, no internet).
+
+**Not included: the screenplay archive** (raw IMSDb pages, database backups, full-text exports). The scripts
+are copyrighted by their owners and are not redistributed. After cloning, collect your own archive (with
+permission from the source, section 5) or restore a backup you own (section 13).
+
+`.venv` and `.env` were made on the development computer (Windows, Python 3.12, MongoDB in `D:\tools\mongodb`).
+On any other computer run `python scripts/setup.py --chatbot` to rebuild the environment, and adjust `.env`.
 
 On a machine that already has Python 3.12+ and a local MongoDB (section 3):
 
@@ -70,7 +76,7 @@ python -m src.main crawl --limit 10        # collect up to 10 records (sample le
 python -m src.main stats                   # what is in the database
 
 # the chatbot
-python -m src.main models fetch            # one-time model download (~5.7 GB)
+python -m src.main models fetch            # assembles the models from the repository's pieces (no internet)
 python -m src.main chat-index              # build the passage search index (~2 min)
 python -m src.main device                  # shows whether the GPU or the CPU will be used, and why
 python -m src.main serve --open            # chat page at http://localhost:8765
@@ -267,7 +273,7 @@ version that applied when they were collected (`rights.*`).
 ## 6. Running ScriptBot (Phase 2)
 
 ```bash
-python -m src.main models fetch             # once, needs internet: downloads + SHA-256-verifies the two models
+python -m src.main models fetch             # joins the stored model pieces (or downloads them) + SHA-256 check
 python -m src.main models status --verify   # check the model files
 python -m src.main chat-index               # once, and after every crawl/reparse (incremental, ~2 min in full)
 python -m src.main device                   # GPU or CPU, and why  (--json for details)
@@ -508,7 +514,8 @@ and run `python -m src.main chat-index`; only changed scripts are re-processed.
 
 **Use a different model.** Add a `ModelSpec` to `MODELS` in `model_store.py` with a pinned Hugging Face revision,
 the exact size and SHA-256 (from the Hugging Face API), the licence, `n_layers` and `kv_bytes_per_token` (used
-for GPU memory planning), then set `IMSDB_CHAT_MODEL` / `IMSDB_EMBED_MODEL` and run `models fetch`. The prompt
+for GPU memory planning), then set `IMSDB_CHAT_MODEL` / `IMSDB_EMBED_MODEL`, run `models fetch`, and `models split` to store it in
+`data/models/parts` (commit the pieces, not the `.gguf`). The prompt
 format (`chatml` in `llm.py`) and the empty `<think>` block are specific to Qwen3; another model family needs
 its own chat template there.
 
@@ -628,7 +635,7 @@ python -m src.main restore data/backups/backup-... --confirm --drop             
 | Exit code 5, "database unavailable" | MongoDB is not running: `python scripts/local_mongodb.py start` (portable) or start the service |
 | `mongod.exe` exits immediately (Windows) | Old Visual C++ runtime; run `vc_redist.x64.exe` from MongoDB's `bin` folder as Administrator |
 | Chatbot: "The chat search index has not been built yet" | `python -m src.main chat-index` |
-| Chatbot: "Model file … is missing or incomplete" | `python -m src.main models fetch` (resumes partial downloads) |
+| Chatbot: "Model file … is missing or incomplete" | `python -m src.main models fetch` (joins the stored pieces; downloads only if they are missing) |
 | Chatbot crashes with `0xc0000005` when loading (Windows) | System `msvcp140.dll` older than 14.40 and the app-local copy is missing from `runtime/win64/` (see `runtime/README.txt`) |
 | Chatbot crashes with `0xc000001d` | The llama-cpp-python build uses CPU instructions this processor lacks; stay on the pinned 0.3.36 |
 | `device` says "no GPU build … is installed" | `python scripts/setup.py --chatbot` (installs the Vulkan build) |

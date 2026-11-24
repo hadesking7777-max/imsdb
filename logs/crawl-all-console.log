@@ -1,0 +1,14 @@
+Job job-20261123T122924-e837a5 -> completed
+Counters:
+  movie_detail_done                1292
+  parse_errors                     10
+  records_new                      1292
+  records_processed                1292
+  records_refreshed                0
+  script_html_done                 1230
+  script_urls_enqueued             1230
+  scripts_created                  1230
+  scripts_missing                  42
+  scripts_pdf_only                 19
+Summary:
+  remaining_sample_quota           None

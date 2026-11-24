@@ -1,0 +1,25 @@
+health: ready {'chat_model': 'Qwen3-8B-Q4_K_M.gguf', 'threads': 6, 'context': 8192, 'chat_load_seconds': 9.3, 'embed_model': 'Qwen3-Embedding-0.6B-Q8_0.gguf'}
+
+=== Q: 《泰坦尼克号》里杰克在船头说了什么？
+stages: [('planning', 0), ('searching', 9), ('writing', 18)]  first token after 65s
+sources: ['Titanic, scene 67 (part 1 of 3): EXT. TITANIC - DAY', 'Titanic, scene 27: EXT. BOW - DAY', 'Titanic, scene 67 (part 3 of 3): EXT. TITANIC - DAY', 'Titanic, scene 43 (part 2 of 4): EXT. BOAT DECK - DAY']
+timings: {'plan': 9.0, 'search': 8.9, 'answer': 63.1, 'total': 81.0}
+A: 在这一稿剧本中，杰克在船头对罗斯说："Sssshh. Come here."（嘘，过来。）[1] 他用手扶住她的腰，仿佛要吻她。随后他说："Close your eyes."（闭上眼睛。）[1] 然后他转身让她面对前方，接着将她的双手举起，像翅膀一样伸展。最后他说："Okay. Open them."（好了，睁开眼睛。）[1]
+
+=== Q: 那这部电影是怎么结尾的？
+stages: [('planning', 0), ('searching', 8), ('writing', 17)]  first token after 61s
+sources: ["Titanic, scene 195 (part 1 of 2): INT. ROSE'S CABIN / KELDYSH", "Titanic, scene 195 (part 2 of 2): INT. ROSE'S CABIN / KELDYSH", "Titanic, scene 102 (part 1 of 2): INT. ROSE AND CAL'S SUITE", 'Titanic, scene 182 (part 2 of 2): EXT. OCEAN']
+timings: {'plan': 8.2, 'search': 8.5, 'answer': 51.3, 'total': 67.9}
+A: 这一稿剧本的结尾是：Rose 和 Jack 在船头静静地躺着，头挨着头，周围只有海浪拍打的声音。随后画面切换到黑屏，结束。[2]
+
+=== Q: Who wrote Alien, and who are its main characters?
+stages: [('planning', 0), ('writing', 6)]  first token after 25s
+sources: []
+timings: {'plan': 6.4, 'answer': 24.3, 'total': 30.7}
+A: *Alien* was written by Walter Hill and David Giler. The main characters are STANDARD, ROBY, HUNTER, MELKONIS, BROUSSARD, and FAUST.
+
+=== Q: 《低俗小说》里朱尔斯开枪前说了什么？
+stages: [('planning', 0), ('searching', 8), ('writing', 18)]  first token after 79s
+sources: ['Pulp Fiction, scene 6: INT. ELEVATOR – MORNING', 'Pulp Fiction, scene 74 (part 2 of 2): INT. APARTMENT – DAY', 'Pulp Fiction, scene 3: INT. CHEVY (TRUNK) – MORNING', 'Pulp Fiction, scene 76 (part 1 of 3): INT. NOVA (MOVING) – MORNING']
+timings: {'plan': 8.5, 'search': 9.5, 'answer': 68.0, 'total': 85.9}
+A: 在《低俗小说》的这一稿剧本中，朱尔斯开枪前对维克多说："You're gonna die, motherfucker."（你他妈要死了。）[4]
