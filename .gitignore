@@ -1,10 +1,10 @@
 # Python caches (regenerated automatically)
 __pycache__/
-*.py[cod]
+*.py[co]
 *.egg-info/
 .pytest_cache/
-build/
-dist/
+/build/
+/dist/
 
 # Everything else in the project folder is committed: code, models, virtual environment, .env, logs and the
 # collected archive (data/raw, data/backups, data/exports).
