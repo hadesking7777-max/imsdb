@@ -1,0 +1,59 @@
+{
+  "backup_id": "backup-20261123T170813Z",
+  "created_at": "2026-11-23T17:09:04.928000+00:00",
+  "database": "imsdb_local",
+  "mongodb_server_version": "9.0.4",
+  "method": "mongodump",
+  "tools": {
+    "mongodump": "mongodump version: 100.20.1"
+  },
+  "collections": {
+    "scenes": 159702,
+    "source_permissions": 1,
+    "dialogues": 958685,
+    "raw_artifacts": 2580,
+    "movies": 1295,
+    "crawl_logs": 4942,
+    "scripts": 1233,
+    "script_versions": 0,
+    "characters": 64057,
+    "crawl_queue": 2590,
+    "crawl_jobs": 4
+  },
+  "includes": {
+    "raw": true,
+    "exports": false
+  },
+  "files": [
+    {
+      "path": "mongodb.archive.gz",
+      "bytes": 604627624,
+      "sha256": "0b8706d012345ef04376256393eb2c02e6736f675f0d1bf519b7e1794def450c"
+    },
+    {
+      "path": "processed-archive.zip",
+      "bytes": 116,
+      "sha256": "e7e20b38236ae6c873994c629b6a024ad06278edd2f0dbb18d86b1897e514d96"
+    },
+    {
+      "path": "raw-archive.zip",
+      "bytes": 83199620,
+      "sha256": "89983c356699bebfb99dfbdafea5a3806d6bb985cb481b958c6969a349e5329b"
+    }
+  ],
+  "settings": {
+    "mongodb_db": "imsdb_local",
+    "data_dir": "D:\\IMSDB\\data",
+    "raw_gzip": false
+  },
+  "restore": [
+    "python -m src.main backup --verify <backup dir>",
+    "python -m src.main restore <backup dir> --confirm [--drop] [--target-db NAME]",
+    "Manual: mongorestore --uri=mongodb://127.0.0.1:27017/ --archive=mongodb.archive.gz --gzip --nsInclude='imsdb_local.*'  (python-bson backups: mongorestore --dir=mongodb-bson)"
+  ],
+  "verification": {
+    "ok": true,
+    "checked_at": "2026-11-23T17:09:06.527000+00:00",
+    "problems": []
+  }
+}
