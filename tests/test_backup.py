@@ -13,7 +13,7 @@ import pytest
 from src.database.connection import Mongo
 from src.database.models import Collections as C
 from src.main import main
-from src.services.backup import create_backup, find_tool, restore_backup, verify_backup
+from src.services.backup import create_backup, find_tool, restore_backup, split_backup, verify_backup
 from src.services.ingestion import IngestionService
 from tests.conftest import FakeSite, make_settings
 
@@ -76,6 +76,30 @@ def test_python_backup_verify_and_restore(app, site: FakeSite, tmp_path: Path) -
     finally:
         with Mongo.connect(target, check=False) as mongo:
             mongo.client.drop_database(target.mongodb_db)
+
+
+def test_split_backup_is_rebuilt_from_pieces(app, site: FakeSite) -> None:
+    """A backup whose large files are stored only as pieces (as in a Git clone) is rebuilt, verified and
+    restorable; a damaged piece is never joined into a bad file.
+
+    Args:
+        app: Ingestion context on a throwaway database, fetching from the fake site.
+        site: The fake IMSDb behind ``app`` (requested so its pages are served).
+    """
+    _ingest(app)
+    directory = Path(create_backup(app.settings, app.mongo, method="python")["directory"])
+    raw_zip = directory / "raw-archive.zip"
+    original = raw_zip.read_bytes()
+    written = split_backup(directory, piece_bytes=max(1, len(original) // 3))
+    pieces = [p for p in written if p.name.startswith("raw-archive.zip.part")]
+    assert len(pieces) >= 3
+    raw_zip.unlink()  # a clone of the repository holds only the pieces
+    assert verify_backup(directory)["ok"] and raw_zip.read_bytes() == original
+    raw_zip.unlink()
+    pieces[0].write_bytes(b"X" * pieces[0].stat().st_size)
+    result = verify_backup(directory)
+    assert not result["ok"] and not raw_zip.exists()
+    assert not list(directory.glob("*.joining"))
 
 
 def test_tampering_is_detected_and_blocks_restore(app, site: FakeSite) -> None:

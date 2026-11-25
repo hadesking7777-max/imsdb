@@ -445,11 +445,12 @@ def cmd_export(rt: Runtime, args: argparse.Namespace) -> int:
 
 
 def cmd_backup(rt: Runtime, args: argparse.Namespace) -> int:
-    """``backup``: list backups (``--list``), verify one (``--verify DIR``) or create a new one.
+    """``backup``: list backups (``--list``), verify one (``--verify DIR``), split one into pieces
+    (``--split DIR``) or create a new one.
 
     Args:
         rt: Runtime of this command.
-        args: Uses ``list``, ``verify``, ``no_raw``, ``include_exports`` and ``method``.
+        args: Uses ``split``, ``list``, ``verify``, ``no_raw``, ``include_exports`` and ``method``.
 
     Returns:
         ``ExitCode.OK``, or ``ExitCode.BACKUP_FAILED`` when ``--verify`` finds problems. A newly created
@@ -457,6 +458,10 @@ def cmd_backup(rt: Runtime, args: argparse.Namespace) -> int:
     """
     from src.services import backup
 
+    if args.split:
+        pieces = backup.split_backup(Path(args.split))
+        _print(f"{len(pieces)} piece(s) written in {args.split}")
+        return ExitCode.OK
     if args.list:
         for item in backup.list_backups(rt.settings):
             _print(f"{item['directory']}  {item['created_at']}  {item['method']}  {item['bytes']:,} bytes")
@@ -581,6 +586,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--method", choices=["auto", "mongodump", "python"], default="auto")
     p.add_argument("--verify", metavar="BACKUP_DIR", help="verify an existing backup instead of creating one")
     p.add_argument("--list", action="store_true", help="list existing backups")
+    p.add_argument("--split", metavar="BACKUP_DIR",
+                   help="also store the backup's files over 95 MB as pieces (for keeping backups in Git)")
 
     p = add("restore", cmd_restore, "restore a backup into local MongoDB (and raw archive)")
     p.add_argument("path", help="backup directory")

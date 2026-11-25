@@ -221,3 +221,4 @@
 {"ts": "2026-11-24T12:52:50.034+00:00", "level": "DEBUG", "logger": "imsdb.chatbot.server", "msg": "127.0.0.1 - \"GET /api/health HTTP/1.1\" 200 -", "thread": "Thread-39 (process_request_thread)"}
 {"ts": "2026-11-24T12:52:51.076+00:00", "level": "INFO", "logger": "imsdb.chatbot.engine", "msg": "prompt caches warmed in 31.2s", "thread": "model-loader"}
 {"ts": "2026-11-24T12:52:51.149+00:00", "level": "DEBUG", "logger": "imsdb.chatbot.server", "msg": "127.0.0.1 - \"GET /api/health HTTP/1.1\" 200 -", "thread": "Thread-40 (process_request_thread)"}
+{"ts": "2026-11-25T01:08:47.859+00:00", "level": "INFO", "logger": "imsdb.backup", "msg": "rebuilt mongodb.archive.gz from 7 stored pieces", "thread": "MainThread"}

@@ -48,21 +48,38 @@ and how to change each part safely. Deeper references:
 
 ## 1. Quick start
 
-**What this repository contains.** Everything in the project folder except the collected screenplays:
-source code, tests, documentation, configuration (`.env`, `.env.example`), logs and validation reports, the
-app-local Windows C++ runtime (`runtime/win64/msvcp140.dll`), the Vulkan GPU build of the chatbot runtime
-(`runtime/gpu/vulkan`), the development virtual environment (`.venv`) and **both AI models** (5.7 GB). The
-models are stored as 58 pieces below GitHub's 100 MB file limit in `data/models/parts/`; the first command that
-needs a model joins its pieces into the `.gguf` file and checks its SHA-256 (about a minute, no internet).
+> **This repository is private and must stay private.** It contains the collected IMSDb archive: about
+> 1,233 screenplays that are copyrighted by their studios and writers and may not be redistributed.
 
-**Not included: the screenplay archive** (raw IMSDb pages, database backups, full-text exports). The scripts
-are copyrighted by their owners and are not redistributed. After cloning, collect your own archive (with
-permission from the source, section 5) or restore a backup you own (section 13).
+**What this repository contains:** everything in the project folder.
 
-`.venv` and `.env` were made on the development computer (Windows, Python 3.12, MongoDB in `D:\tools\mongodb`).
-On any other computer run `python scripts/setup.py --chatbot` to rebuild the environment, and adjust `.env`.
+* Source code, tests, documentation, configuration (`.env`, `.env.example`), logs and validation reports.
+* **The collected archive:** the original IMSDb pages (`data/raw`), every database backup (`data/backups`) and the
+  full-text export (`data/exports`). The live MongoDB database itself lives outside the project folder
+  (`D:\tools\mongodb\data\db` on the development computer); the backups are its complete, verified copies.
+* **Both AI models** (5.7 GB), the app-local Windows C++ runtime (`runtime/win64/msvcp140.dll`), the Vulkan GPU
+  build of the chatbot runtime (`runtime/gpu/vulkan`) and the development virtual environment (`.venv`).
 
-On a machine that already has Python 3.12+ and a local MongoDB (section 3):
+Files over GitHub's 100 MB limit are stored as numbered pieces below 95 MiB and rebuilt automatically, with a
+SHA-256 check: the models (`data/models/parts/`) on first use, and large backup files (`<file>.partNNN`) by
+`backup --verify` and `restore`.
+
+**From a fresh clone to a working chatbot** (Windows, Python 3.12, MongoDB installed as in section 3):
+
+```bash
+python scripts/setup.py --chatbot                    # rebuild .venv for this computer; adjust .env if needed
+python scripts/local_mongodb.py start                # or start the MongoDB service
+python scripts/init_database.py                      # collections, validators, indexes
+python -m src.main restore data/backups/backup-20261124T122400Z --confirm   # the whole database (latest backup)
+python -m src.main chat-index                        # chatbot search index (~2 minutes)
+python -m src.main serve --open                      # models are assembled on first start
+```
+
+When you make a new backup that you want to keep in the repository, store its large files as pieces and list the
+original in `.gitignore` (GitHub refuses files over 100 MB):
+`python -m src.main backup --split data/backups/<backup folder>`.
+
+To start a new archive from scratch instead, on a machine that already has Python 3.12+ and a local MongoDB:
 
 ```bash
 python scripts/setup.py --chatbot          # .venv + all packages (CPU runtime + Vulkan GPU runtime)
@@ -356,10 +373,10 @@ automatically. The logic is in `src/chatbot/device.py`:
 │   └── chatbot/                 ScriptBot (Phase 2), see section 9.7
 ├── tests/                       pytest suite; fixtures/ holds synthetic HTML in IMSDb's page structure
 ├── runtime/
-│   ├── win64/msvcp140.dll       newer Microsoft C++ runtime, loaded app-locally (Windows; not in git)
-│   └── gpu/<backend>/           GPU builds of llama-cpp-python (installed by setup.py; not in git)
-├── data/                        (not in git) raw/, processed/, exports/, backups/, models/, index/
-└── logs/                        (not in git) imsdb.log (JSON lines), chatbot logs
+│   ├── win64/msvcp140.dll       newer Microsoft C++ runtime, loaded app-locally (Windows)
+│   └── gpu/<backend>/           GPU builds of llama-cpp-python (vulkan committed; cuda optional)
+├── data/                        raw/, exports/, backups/ (the archive), models/parts/ (models in pieces)
+└── logs/                        imsdb.log (JSON lines), chatbot logs
 ```
 
 ## 9. Module guide

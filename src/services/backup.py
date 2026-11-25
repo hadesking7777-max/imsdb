@@ -44,6 +44,9 @@ BSON_DIR = "mongodb-bson"
 RAW_ZIP = "raw-archive.zip"
 PROCESSED_ZIP = "processed-archive.zip"
 MANIFEST = "manifest.json"
+# Backup files larger than this are also stored as numbered pieces (``<file>.part001`` ...) so the backup
+# folder can live in a Git repository (GitHub refuses files over 100 MB). See split_backup / join_pieces.
+PIECE_BYTES = 95 * 1024 * 1024
 
 
 # ====================================================================== tools
@@ -322,8 +325,101 @@ def _write_manifest(directory: Path, manifest: dict[str, Any]) -> None:
 
 
 # ====================================================================== verify
+def split_backup(directory: Path, piece_bytes: int = PIECE_BYTES) -> list[Path]:
+    """Store every large file of a backup as numbered pieces next to it (for keeping backups in Git).
+
+    Only files listed in the manifest and larger than ``piece_bytes`` are split; the originals are kept.
+    Existing pieces of those files are replaced. The pieces are joined again automatically by
+    :func:`verify_backup` (and therefore by restore) when the original file is missing.
+
+    Args:
+        directory: Backup folder (must contain ``manifest.json``).
+        piece_bytes: Maximum piece size in bytes (default 95 MiB).
+
+    Returns:
+        The pieces written.
+
+    Raises:
+        BackupError: The manifest is missing or a listed file is missing or does not match its checksum.
+    """
+    manifest_path = directory / MANIFEST
+    if not manifest_path.exists():
+        raise BackupError(f"{manifest_path} not found")
+    written: list[Path] = []
+    for entry in json.loads(manifest_path.read_text(encoding="utf-8")).get("files", []):
+        if entry["bytes"] <= piece_bytes:
+            continue
+        source = directory / entry["path"]
+        if not source.exists() or sha256_file(source) != entry["sha256"]:
+            raise BackupError(f"{source} is missing or does not match the manifest; cannot split it")
+        for old in _pieces_of(source):
+            old.unlink()
+        with source.open("rb") as fh:
+            index = 0
+            while block := fh.read(piece_bytes):
+                index += 1
+                piece = source.with_name(f"{source.name}.part{index:03d}")
+                piece.write_bytes(block)
+                written.append(piece)
+    return written
+
+
+def _pieces_of(path: Path) -> list[Path]:
+    """List the stored pieces of a backup file, in order.
+
+    Args:
+        path: The (possibly missing) original file.
+
+    Returns:
+        ``<name>.part001``, ``<name>.part002`` ... that exist next to it.
+    """
+    return sorted(path.parent.glob(f"{path.name}.part[0-9][0-9][0-9]"))
+
+
+def join_pieces(directory: Path) -> list[str]:
+    """Rebuild missing backup files from their stored pieces, checked against the manifest.
+
+    A file is rebuilt only when it is missing or has the wrong size and its pieces add up to the size in the
+    manifest. The joined file replaces the target only if its SHA-256 matches the manifest.
+
+    Args:
+        directory: Backup folder.
+
+    Returns:
+        Manifest paths of the files that were rebuilt (empty when nothing was needed or possible).
+    """
+    manifest_path = directory / MANIFEST
+    if not manifest_path.exists():
+        return []
+    rebuilt: list[str] = []
+    for entry in json.loads(manifest_path.read_text(encoding="utf-8")).get("files", []):
+        target = directory / entry["path"]
+        if target.exists() and target.stat().st_size == entry["bytes"]:
+            continue
+        pieces = _pieces_of(target)
+        if not pieces or sum(p.stat().st_size for p in pieces) != entry["bytes"]:
+            continue
+        tmp = target.with_name(target.name + ".joining")
+        with tmp.open("wb") as out:
+            for piece in pieces:
+                with piece.open("rb") as fh:
+                    shutil.copyfileobj(fh, out, 8 * 1024 * 1024)
+        if sha256_file(tmp) != entry["sha256"]:
+            tmp.unlink(missing_ok=True)
+            log.warning("pieces of %s do not match the manifest checksum; not rebuilt", entry["path"])
+            continue
+        tmp.replace(target)
+        rebuilt.append(entry["path"])
+        log.info("rebuilt %s from %d stored pieces", entry["path"], len(pieces))
+    return rebuilt
+
+
 def verify_backup(directory: Path) -> dict[str, Any]:
-    """Check a backup folder against its manifest without modifying anything.
+    """Check a backup folder against its manifest.
+
+    The only change it may make: large files that are missing but stored as pieces (see
+    :func:`split_backup`) are first rebuilt with :func:`join_pieces`; the rebuilt file is then checked like
+    any other. Nothing else is modified.
 
     Checks the manifest checksum, each listed file's size and SHA-256, zip integrity, and either the
     document count of every BSON dump (Python method) or the presence of the mongodump archive.
@@ -339,6 +435,7 @@ def verify_backup(directory: Path) -> dict[str, Any]:
     manifest_path = directory / MANIFEST
     if not manifest_path.exists():
         return {"ok": False, "problems": [f"{MANIFEST} missing"], "checked_files": 0}
+    join_pieces(directory)
     side = directory / (MANIFEST + ".sha256")
     if side.exists():
         expected = side.read_text(encoding="utf-8").split()[0]

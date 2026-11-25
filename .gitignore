@@ -6,19 +6,20 @@ __pycache__/
 build/
 dist/
 
-# Everything else in the project folder is committed (models, virtual environment, .env, logs, reports, runtime),
-# EXCEPT the collected screenplay content: it is copyrighted by its owners and must not be redistributed.
-data/raw/*
-data/processed/*
-data/backups/*
-data/exports/export-*/
-!data/**/.gitkeep
+# Everything else in the project folder is committed: code, models, virtual environment, .env, logs and the
+# collected archive (data/raw, data/backups, data/exports).
+# THIS REPOSITORY MUST STAY PRIVATE: data/ contains copyrighted screenplays that may not be redistributed.
 
-# Models are committed as pieces below GitHub's 100 MB limit (data/models/parts) and reassembled on first use;
-# the assembled files and download/assembly leftovers are not committed.
+# Files over GitHub's 100 MB limit are committed as pieces below 95 MiB and rebuilt automatically:
+#  - models: data/models/parts/*.partNNN, joined (SHA-256-checked) on first use
+#  - backups: <file>.partNNN next to the file (python -m src.main backup --split DIR), joined by
+#    backup --verify / restore. List each split original here.
 data/models/*.gguf
 data/models/*.part
 data/models/*.assembling
+data/backups/backup-20261123T170813Z/mongodb.archive.gz
+data/backups/backup-20261124T122400Z/mongodb.archive.gz
+data/backups/*/*.joining
 data/index/*
 
 # Optional CUDA build (510 MB; installed with: python scripts/setup.py --chatbot --gpu-backend cuda)

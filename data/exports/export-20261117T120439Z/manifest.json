@@ -1,0 +1,58 @@
+{
+  "created_at": "2026-11-17T12:04:40.192000+00:00",
+  "database": "imsdb_local",
+  "format": "json",
+  "include_text": true,
+  "permission": {
+    "level": "sample",
+    "version": 1,
+    "sample_limit": 10
+  },
+  "attribution": "Screenplay text retrieved from The Internet Movie Script Database (IMSDb), https://imsdb.com. All rights belong to the respective copyright holders (studios and writers).",
+  "usage_restriction": "Educational, scholarship, research and criticism use only (per the source's fair-use disclaimer). Not for sale or redistribution. Local storage only.",
+  "notice": "Local export for educational research. Do not redistribute screenplay text.",
+  "files": [
+    {
+      "file": "movies.json",
+      "collection": "movies",
+      "records": 1295,
+      "bytes": 1178988,
+      "sha256": "1f822261bd98be1b0ab04e08aff0cc8a75843367154b5a630faa4bb88cbfb1a3"
+    },
+    {
+      "file": "scripts.json",
+      "collection": "scripts",
+      "records": 3,
+      "bytes": 4512781,
+      "sha256": "928bccb114a388fce1ab83a6a43b07697010ce61d10e56e7a3df3cf7b0a6b64b"
+    },
+    {
+      "file": "scenes.json",
+      "collection": "scenes",
+      "records": 452,
+      "bytes": 1178334,
+      "sha256": "9c465c06c6e8e7d5b7d9ee4ea9f097190ade64d530f2b27b0d926d01ea7d0e28"
+    },
+    {
+      "file": "characters.json",
+      "collection": "characters",
+      "records": 121,
+      "bytes": 187766,
+      "sha256": "d58d6d5c637d023e7bf0748b3e035cb2e380ef85eef7505d2c8e1c1a852067fe"
+    },
+    {
+      "file": "dialogues.json",
+      "collection": "dialogues",
+      "records": 2343,
+      "bytes": 2567517,
+      "sha256": "849527c0aa517575b69c38d0d6b49279a24a9d0b5b1c405c5c5626e29d64708e"
+    },
+    {
+      "file": "source_permissions.json",
+      "collection": "source_permissions",
+      "records": 1,
+      "bytes": 6529,
+      "sha256": "a5d52cc18a1d26e6d8349f07bb131a33165fbd239b302070bfbd7aa97d612399"
+    }
+  ]
+}
